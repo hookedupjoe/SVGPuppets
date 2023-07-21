@@ -56,6 +56,7 @@
   var showBacks = false;
   var showEQ = false;
   var showStar = false;
+  var beatChangeParts = [];
 
 
   DaftPunkContoller = {
@@ -121,6 +122,7 @@
       DaftPunkContoller.isMoveComplete = true;
     },
     repaintWindow: function() {
+      return;
       $('body').css("border", "solid 0px red");
           setTimeout(function(){
               $('body').css("border", "solid 0px transparent");
@@ -147,12 +149,19 @@
 
         this.helmetparts[0].style("fill", "white");
         this.helmetparts[1].style("fill", "DarkGray");
-        this.helmetparts[2].style("fill", "black");
+        this.helmetparts[2].style("fill", "green");
         this.helmetparts[3].style("fill", "#A0A0A0");
         this.helmetparts[4].style("fill", "#C0C0C0");
-        this.helmetparts[5].style("fill", "black");
-        this.helmetparts[6].style("fill", "black");
-        this.helmetparts[7].style("fill", "black");
+        this.helmetparts[5].style("fill", "green");
+        this.helmetparts[6].style("fill", "green");
+        this.helmetparts[7].style("fill", "green");
+
+        //--- Optionally add anything here to cycle with the beat
+        // beatChangeParts.push(this.helmetparts[2]);
+        // beatChangeParts.push(this.helmetparts[5]);
+        // beatChangeParts.push(this.helmetparts[6]);
+        // beatChangeParts.push(this.helmetparts[7]);
+ 
 
 
 
@@ -311,6 +320,15 @@
     DaftPunkContoller.init(svg, g);
 
 
+    if (!showStar) {
+      volume.style("display", "none");
+      star.style("display", "none");
+    } else {
+      volume.style("display", "");
+      star.style("display", "");
+    }
+
+    
     // update the display based on data
     d3.interval(function () {
      
@@ -319,18 +337,16 @@
         var tmpVol = eqData.vol || 0;
         //volume.attr("r", volScale(tmpVol));
 
-        if (!showStar) {
-          volume.style("display", "none");
-          star.style("display", "none");
-        } else {
-          volume.style("display", "");
-          star.style("display", "");
-        }
         var tmpBeatVal = eqData.kCycle;
         var tmpScaleStar = (tmpVol / 255);
         var tmpScaleVol = (tmpBeatVal / 255);
 
-        volume.style("fill", colorScale(tmpBeatVal))
+        volume.style("fill", colorScale(tmpBeatVal));
+
+        for( var iPos in beatChangeParts){
+          //console.log('fill', colorScale(tmpBeatVal))
+          beatChangeParts[iPos].style("fill", colorScale(tmpBeatVal))
+        }
 
         tmpScaleStar = tmpScaleStar * 2;
         star.attr("transform", "scale(" + tmpScaleStar + ")");

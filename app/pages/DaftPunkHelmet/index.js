@@ -4,8 +4,8 @@
 
     //~thisPageSpecs//~
 var thisPageSpecs = {
-	"pageName": "Home",
-	"pageTitle": "Home",
+	"pageName": "DaftPunkHelmet",
+	"pageTitle": "Daft Punk",
 	"navOptions": {
 		"topLink": false,
 		"sideLink": true
@@ -21,7 +21,7 @@ thisPageSpecs.layoutOptions = {
   north: false,
   east: false,
   west: false,
-  center: { html: "Welcome" },
+  center: { control: "DaftPunkHelmet", source: "__app" },
   south: false
 }
 //~layoutOptions~//~
@@ -84,16 +84,33 @@ thisPageSpecs.required = {
 
     //------- --------  --------  --------  --------  --------  --------  -------- 
     //~YourPageCode//~
-actions.testColorChange = function() {
-  this.parts.center.testColorChange()
-}
+actions.loadASpot = loadASpot;
+    function loadASpot() {
+        ThisPage.loadSpot("funspot", "We are having fun now")
+    };
 
-actions.connect = function(){
-   this.parts.center.connect()
-}
-actions.disconnect = function(){
-   this.parts.center.disconnect()
-}
+    actions.loadASpot = loadASpot;
+    function loadASpot() {
+        var tmpHTML = [];
+        tmpHTML.push('<div class="ui-layout-center">Center')
+        tmpHTML.push('</div>')
+        tmpHTML.push('<div class="ui-layout-north">North</div>')
+        tmpHTML.push('<div class="ui-layout-south">South</div>')
+        tmpHTML.push('<div class="ui-layout-east">East</div>')
+        tmpHTML.push('<div class="ui-layout-west">West</div>')
+        tmpHTML = tmpHTML.join('');
+
+        ThisPage.loadSpot("body", tmpHTML);
+        var tmpBodySpot = ThisPage.getSpot("body");
+        var tmpLayout = tmpBodySpot.layout();
+        console.log('tmpLayout', tmpLayout);
+        if (typeof (ThisApp.refreshLayouts) == 'function') {
+            ThisApp.refreshLayouts();
+        }
+        console.log('tmpBodySpot', tmpBodySpot);
+
+
+    };
 //~YourPageCode~//~
 
 })(ActionAppCore, $);
