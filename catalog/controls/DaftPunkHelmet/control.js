@@ -54,10 +54,7 @@
   var displayBands = [];
   var colors = [];
   var showBacks = false;
-  var showEQ = true;
-
-
-
+  var showEQ = false;
 
 
   DaftPunkContoller = {
