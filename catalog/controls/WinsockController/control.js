@@ -5,8 +5,8 @@
       padding: true
     },
     content: [{
-      ctl: "spot",
-      name: "body",
+      ctl: "div",
+      name: "winsockcontrollerspot",
       text: ""
     }]
   }

@@ -481,7 +481,7 @@ var hasShown = 0;
 
     daftPunkStartup()
 
-    DaftPunk.getSpot('body').get(1).remove();
+    //DaftPunk.getSpot('body').get(1).remove();
     DaftPunk.getSpot('body').css('background-color', 'green');
 
     // this.colorElems = ThisApp.getByAttr$({
