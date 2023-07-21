@@ -156,7 +156,7 @@
         var tmpScaleObject = 1;
         var tmpSize = this.objwrap.node().getBBox();
 
-        var tmpHelmetScale = 3;
+        var tmpHelmetScale = 7;
 
         var tmpH = parseInt(tmpSize.height) * tmpHelmetScale;
         var tmpW = parseInt(tmpSize.width) * tmpHelmetScale;
@@ -444,6 +444,11 @@ var hasShown = 0;
     this.wstool.onstream = onstream;
 
   }
+  
+  ControlCode.disconnect = function(){
+    this.wstool.close(); 
+  }
+  
   ControlCode._onInit = _onInit;
   function _onInit() {
     window.DaftPunk = this;

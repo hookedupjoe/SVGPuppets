@@ -91,8 +91,8 @@ actions.testColorChange = function() {
 actions.connect = function(){
    this.parts.center.connect()
 }
-actions.close = function(){
-   this.parts.center.close()
+actions.disconnect = function(){
+   this.parts.center.disconnect()
 }
 //~YourPageCode~//~
 
