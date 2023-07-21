@@ -15,27 +15,22 @@
 
   ControlCode.setup = setup;
   function setup() {}
+  var WebSocketControl = window.WebSocket || window.MozWebSocket;
 
   ControlCode._onInit = _onInit;
   function _onInit() {}
 
 
-  
-
-  if (!window.WebSocket && window.MozWebSocket) {
-    window.WebSocket = window.MozWebSocket;
-  }
-
-  if (!window.WebSocket) {
+  if (!WebSocketControl) {
     alert("WebSocket not supported by this browser");
   }
 
-  function GET() {
-    return document.getElementById(arguments[0]);
-  }
-  function GETVAL() {
-    return document.getElementById(arguments[0]).value;
-  }
+  // function GET() {
+  //   return document.getElementById(arguments[0]);
+  // }
+  // function GETVAL() {
+  //   return document.getElementById(arguments[0]).value;
+  // }
 
   function getKeyCode(ev) {
     if (window.event)
@@ -54,7 +49,7 @@
       this._scount = 0;
 
       try {
-        this._ws = new WebSocket(location);
+        this._ws = new WebSocketControl(location);
         this._ws.onopen = this._onopen;
         this._ws.onmessage = this._onmessage;
         this._ws.onclose = this._onclose;

@@ -1,5 +1,5 @@
 (function (ActionAppCore, $) {
-
+  
   var homeTplName = 'DaftPunkHome'
   var ControlSpecs = {
     options: {
@@ -48,6 +48,15 @@
     }
   };
 
+  var data = [];
+  var arcs = [];
+  var backs = [];
+  var displayBands = [];
+  var colors = [];
+  var showBacks = false;
+  var showEQ = true;
+
+
 
 
 
@@ -91,7 +100,6 @@
 
       for (var i = 0; i < this.helmetPartCount; i++) {
         tmpToFind = 'helmet' + (i+1);
-        console.log('helmet',tmpToFind);
         this.helmetparts.push(svg.selectAll("#" +  tmpToFind + ""));
       }
       for (var i = 0; i < this.dotCount; i++) {
@@ -157,6 +165,9 @@
         var tmpSize = this.objwrap.node().getBBox();
 
         var tmpHelmetScale = 7;
+        if( showEQ ){
+          tmpHelmetScale = 3;
+        }
 
         var tmpH = parseInt(tmpSize.height) * tmpHelmetScale;
         var tmpW = parseInt(tmpSize.width) * tmpHelmetScale;
@@ -199,12 +210,7 @@
     }
   };
 
-
-
   function daftPunkStartup() {
-
-
-    console.log('running init function')
     var tmpFromAt = 52;
     var tmpToAt = 60;
     var tmpIncr = 10;
@@ -220,7 +226,6 @@
     //bandCount = parseInt(tmpBC);
     var bandCount = 30
 
-    var tmpShowBacks = ''; //getUrlParameter('showbacks') || '';
 
     if (bandCount > 10) {
       tmpFromAt = 52;
@@ -283,7 +288,7 @@
 
     for (var i = 0; i < bandCount; i++) {
 
-      if ("true" == tmpShowBacks.toLowerCase() || "1" == tmpShowBacks) {
+      if (showBacks) {
         backs.push(g.append("path")
           .datum({
             endAngle: tau
@@ -291,7 +296,6 @@
           .style("fill", "#ddd")
           .attr("d", arcs[i])
         )
-
       }
 
       displayBands.push(
@@ -305,7 +309,6 @@
 
 
     }
-
 
     DaftPunkContoller.init(svg, g);
 
@@ -344,14 +347,18 @@
         starwrap.attr("transform", "translate(" + ((tmpStarX) - (tmpW / 2) - tmpOffset) + "," + ((tmpStarY) - (tmpH / 2) - tmpOffset) + ")");
         //starwrap.attr("transform", "translate(" + (0-( tmpSize.width / 2)) + "," + tmpSize.height / 2 + ")");
         //starwrap.attr("transform", "translate(" + 0-tmpDiff + "," + 0-tmpDiff + ")");
-
-        for (var i = 0; i < bandCount; i++) {
-          var tmpDisp = displayBands[i];
-          tmpDisp.transition()
-          .duration(4)
-          .attrTween("d", arcTween((data[i] / 255) * tau, arcs[i]));
+        //console.log('bandCount',bandCount);
+        if (showEQ) {
+          for (var i = 0; i < bandCount; i++) {
+            //console.log('data[i]',i,data[i]);
+            var tmpBVal = eqData['B' + (i+1)];
+            var tmpDisp = displayBands[i];
+            tmpDisp.transition()
+            .duration(4)
+            .attrTween("d", arcTween((tmpBVal / 255) * tau, arcs[i]));
+          }
         }
-      } catch (ex) {
+    } catch (ex) {
         //temp -> 
         console.error("Error ", ex);
       }
