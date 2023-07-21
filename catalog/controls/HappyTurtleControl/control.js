@@ -280,6 +280,9 @@
     this.loadSpot('body', {}, 'HappyTurtle');
     this.initElems();
    
+   
+    this.getSpot('body').css('background-color', 'green');
+
   
 //tmpTail.setAttribute("transform", "translate(" + tmpX + "," + tmpY + ") rotate(10,50,150) scale(" + (tmpScale) + "," + tmpScale + ") ");
 

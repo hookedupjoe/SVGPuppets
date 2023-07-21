@@ -252,6 +252,9 @@
     console.log('this.colorElems',this.colorElems);
     this.initColors();
     
+     this.getSpot('body').css('background-color', 'green');
+
+
     this.winsock = this.parts.winsock;
     this.wstool = this.winsock.wstool;
   }
