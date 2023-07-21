@@ -461,8 +461,8 @@ var hasShown = 0;
     window.DaftPunk = this;
     this.showDebug = false;
     this.loadSpot('body', {}, homeTplName);
-    //this.connectURL = 'ws://10.0.0.211:8080/eq';
-    this.connectURL = 'ws://localhost:8080/eq';
+    //this.connectURL = 'ws://10.0.0.211:7010/eq';
+    this.connectURL = 'ws://localhost:7010/eq';
 
 
     daftPunkStartup()

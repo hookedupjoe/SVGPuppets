@@ -62,8 +62,8 @@
 	
 	
   ControlCode.runTest = function(){
-    //this.wsURL = 'ws://localhost:8080/eq';
-    this.wsURL = 'ws://10.0.0.211:8080/eq';
+    //this.wsURL = 'ws://localhost:7010/eq';
+    this.wsURL = 'ws://10.0.0.211:7010/eq';
     
     this.wstool.connect(this.wsURL);
 	  this.wstool.onstream = onstream.bind(this);
