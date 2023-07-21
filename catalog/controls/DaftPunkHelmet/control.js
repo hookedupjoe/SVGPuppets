@@ -55,6 +55,7 @@
   var colors = [];
   var showBacks = false;
   var showEQ = false;
+  var showStar = false;
 
 
   DaftPunkContoller = {
@@ -318,13 +319,13 @@
         var tmpVol = eqData.vol || 0;
         //volume.attr("r", volScale(tmpVol));
 
-        if (!eqData.hasOwnProperty("kCycle")) {
+        if (!showStar) {
           volume.style("display", "none");
           star.style("display", "none");
-          return;
+        } else {
+          volume.style("display", "");
+          star.style("display", "");
         }
-        volume.style("display", "");
-        star.style("display", "");
         var tmpBeatVal = eqData.kCycle;
         var tmpScaleStar = (tmpVol / 255);
         var tmpScaleVol = (tmpBeatVal / 255);
