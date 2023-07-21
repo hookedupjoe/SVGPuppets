@@ -38,15 +38,17 @@
 			  console.log('nada');
 			  return;
 			}
-			
+			this.eqData = eqData;
 			var tmpKickCycle = eqData.kCycle;
 			var tmpKCP = tmpKickCycle/255;
 			var tmpNewHueOffset = tmpKCP * 360;
-			this.hueShiftTo(tmpNewHueOffset);
+			this.setElemColor(tmpNewHueOffset);
 			if( this.showDebug ){
 			   console.log('tmpNewHueOffset',tmpNewHueOffset);
 			}
-			data = tmpData.b30;
+			
+			
+			//data = tmpData.b30;
 			if( this.showDebug ){
 			  console.log('kCycle - val',eqData.kCycle, eqData.kVal);
 			}
@@ -57,6 +59,7 @@
 			}
 		}
 	}
+	
 	
   ControlCode.runTest = function(){
     //this.wsURL = 'ws://localhost:8080/eq';
@@ -111,12 +114,17 @@
 
   
   
-  ControlCode.hueShiftTo = function(theOffset) {
+  ControlCode.setElemColor = function(theOffset) {
 
     // var tmpAllColors = ThisApp.getByAttr$({
     //     svguse: "color"
     // });
-  
+  //   var tmpBC1 = tmpData.b8;
+		// var tmpBC2 = tmpData.b27;
+		// var tmpCol1 = $(this.colorElems[1]);
+		// var tmpCol2 = $(this.colorElems[11]);
+			
+			console.log('eqData',this.eqData);
 
     for (var i = 0; i < this.colorElems.length; i++) {
       var tmpEntry = $(this.colorElems[i]);
@@ -132,8 +140,15 @@
         tmpNewH = tmpNewH - 360;
       }
       var tmpS = tmpOrig.s/255;
-      var tmpV = tmpOrig.v/255;
+       var tmpV = tmpOrig.v/255;
       //console.log('tmpNewH, tmpS, tmpV',tmpNewH, tmpS, tmpV);
+      var tmpBand = (i+1)*2;
+      var tmpBandVal = this.eqData['B'+tmpBand];
+      var tmpAdjBVal = (tmpBandVal/255)*155;
+      
+      tmpBandVal = 100 + tmpAdjBVal;
+      var tmpV = tmpBandVal/255;
+      //console.log('tmpBandVal',tmpBandVal);
       
       var tmpNewRGB = HSVtoRGB(tmpNewH, tmpS, tmpV)
       var tmpNewRGBFill = 'rgb(' + tmpNewRGB.r + ',' + tmpNewRGB.g + ',' + tmpNewRGB.b + ')';
