@@ -3,7 +3,7 @@
   var homeTplName = 'DaftPunkHome'
   var ControlSpecs = {
     options: {
-      padding: true,
+      padding: false,
       required: {
         templates: {
           map:
@@ -454,10 +454,14 @@ var hasShown = 0;
     window.DaftPunk = this;
     this.showDebug = false;
     this.loadSpot('body', {}, homeTplName);
-    this.connectURL = 'ws://10.0.0.211:8080/eq';
+    //this.connectURL = 'ws://10.0.0.211:8080/eq';
+    this.connectURL = 'ws://localhost:8080/eq';
 
 
     daftPunkStartup()
+
+    DaftPunk.getSpot('body').get(1).remove();
+    DaftPunk.getSpot('body').css('background-color', 'green');
 
     // this.colorElems = ThisApp.getByAttr$({
     //     svguse: "color"
@@ -467,6 +471,10 @@ var hasShown = 0;
 
     this.winsock = this.parts.winsock;
     this.wstool = this.winsock.wstool;
+    var self = this;
+    ThisApp.delay(1000).then(function(){
+      self.connect()
+    })
   }
 
   var ThisControl = {
