@@ -145,8 +145,8 @@
         this.hasMoved = true;
 
         this.helmetparts[0].style("fill", "white");
-        this.helmetparts[1].style("fill", "steelblue");
-        this.helmetparts[2].style("fill", "darkblue");
+        this.helmetparts[1].style("fill", "DarkGray");
+        this.helmetparts[2].style("fill", "black");
         this.helmetparts[3].style("fill", "#A0A0A0");
         this.helmetparts[4].style("fill", "#C0C0C0");
         this.helmetparts[5].style("fill", "black");
@@ -277,7 +277,7 @@
     star.style("fill", "yellow");
 
     var volume = svg.selectAll("[use='volume']");
-    // or steelblue or someting ??
+    // or DarkGray or someting ??
     volume.style("fill", "#FF2222")
     .attr("r", 30)
     .attr("cx", width / 2)
