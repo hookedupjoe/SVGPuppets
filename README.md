@@ -2,18 +2,24 @@
 - Author: Joseph Francis, hookedup, inc.
 - Web Code License: MIT
 
-## ToDo: Update this out of date FAQ
+## NEW PRODUCT
+- This is a project pulled out of the closet and being reimplemented in a new environment.  When this message is removed, it is ready to use by less technical folks. 
+
+## To Use with OBS
+- This can be used with OBS using the "Browser" source and setting the URL to the page.  Then use the Chroma Key filter to remove the green screen.
 
 ## About
 - This is a Node.js application that uses D3 to visually represent music EQ and beat related values.  
+- This version is designed to run inside of Mongino.  A stand along version will be available potentially. 
 - The page connects via WebSockets to the Hookedup LED Controller App to get a real time stream of EQ values (pre smoothed) and beat details (also processed for easier graphical display).
 - This demo shows 30 bands using arcs.  There is a circle in the center that changes color as the Snare drum hits (to change color with the beat).  There is also a star that changes size with the volume, making it jump with the music over the colored dot.
 
 ## Setup
  1) Download the Hookedup LED Controller Application from the products page on the [Hookedup Website](https://www.hookedup.com)
- 
  [Direct Link to Java App](https://hookedup.com/res/HookedupLEDController.jar?open)
- 
+
+2) Download and install Mongino (which requires Node.js 14 or higher installed along with a MongoDB setup).
+** ToDo: More details on this or create stand alone version.
 
  ### One Time Setup
  - Run the Hookedup LED Controller application 
