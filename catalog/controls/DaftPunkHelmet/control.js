@@ -142,8 +142,8 @@
         this.helmetparts[0].style("fill", "white");
         this.helmetparts[1].style("fill", "steelblue");
         this.helmetparts[2].style("fill", "darkblue");
-        this.helmetparts[3].style("fill", "black");
-        this.helmetparts[4].style("fill", "black");
+        this.helmetparts[3].style("fill", "#A0A0A0");
+        this.helmetparts[4].style("fill", "#C0C0C0");
         this.helmetparts[5].style("fill", "black");
         this.helmetparts[6].style("fill", "black");
         this.helmetparts[7].style("fill", "black");
@@ -352,7 +352,8 @@
           .attrTween("d", arcTween((data[i] / 255) * tau, arcs[i]));
         }
       } catch (ex) {
-        //temp -> console.error("Error " + ex.toString());
+        //temp -> 
+        console.error("Error ", ex);
       }
     },
       5);
@@ -445,6 +446,7 @@ var hasShown = 0;
   }
   ControlCode._onInit = _onInit;
   function _onInit() {
+    window.DaftPunk = this;
     this.showDebug = false;
     this.loadSpot('body', {}, homeTplName);
     this.connectURL = 'ws://10.0.0.211:8080/eq';

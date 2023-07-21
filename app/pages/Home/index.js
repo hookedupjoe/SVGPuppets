@@ -21,7 +21,7 @@ thisPageSpecs.layoutOptions = {
   north: false,
   east: { html: 'east' },
   west: false,
-  center: { control: "CozyGuitar", source: "__app" },
+  center: { control: "DaftPunkHelmet", source: "__app" },
   south: false
 }
 //~layoutOptions~//~
@@ -86,6 +86,13 @@ thisPageSpecs.required = {
     //~YourPageCode//~
 actions.testColorChange = function() {
   this.parts.center.testColorChange()
+}
+
+actions.connect = function(){
+   this.parts.center.connect()
+}
+actions.close = function(){
+   this.parts.center.close()
 }
 //~YourPageCode~//~
 
