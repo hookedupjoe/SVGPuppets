@@ -21,7 +21,7 @@ thisPageSpecs.layoutOptions = {
   north: false,
   east: { html: "east" },
   west: false,
-  center: { html: "Welcome" },
+  center: { control: "HomeControl", source: "__app" },
   south: false
 }
 //~layoutOptions~//~
@@ -62,7 +62,7 @@ thisPageSpecs.required = {
         ThisPage.initOnFirstLoad().then(
             function () {
                 //~_onFirstLoad//~
-
+actions.connect();
 //~_onFirstLoad~//~
                 ThisPage._onActivate();
             }
@@ -84,15 +84,20 @@ thisPageSpecs.required = {
 
     //------- --------  --------  --------  --------  --------  --------  -------- 
     //~YourPageCode//~
-actions.testColorChange = function() {
-  this.parts.center.testColorChange()
+actions.runTest = function() {
+  alert('home runTest');
 }
 
+
 actions.connect = function(){
-   this.parts.center.connect()
+   ThisPage.parts.center.connect()
 }
 actions.disconnect = function(){
-   this.parts.center.disconnect()
+   ThisPage.parts.winsock.disconnect()
+}
+
+actions.doRefresh = function() {
+  window.location = window.location;
 }
 //~YourPageCode~//~
 

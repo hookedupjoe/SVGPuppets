@@ -29,10 +29,7 @@
 
   var ControlCode = {};
 
-  var eqData = {
-    volume: 0
-  };
-
+  
   var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
     sURLVariables = sPageURL.split('&'),
@@ -69,6 +66,7 @@
       250,
       75],
     init: function(theSVG, theG) {
+      
       var svg = theSVG,
       width = +svg.attr("width"),
       height = +svg.attr("height");
@@ -101,6 +99,15 @@
         tmpToFind = 'helmet' + (i+1);
         this.helmetparts.push(svg.selectAll("#" +  tmpToFind + ""));
       }
+      this.helmetparts[0].style("fill", "white");
+      this.helmetparts[1].style("fill", "DarkGray");
+      this.helmetparts[2].style("fill", "green");
+      this.helmetparts[3].style("fill", "#A0A0A0");
+      this.helmetparts[4].style("fill", "#C0C0C0");
+      this.helmetparts[5].style("fill", "green");
+      this.helmetparts[6].style("fill", "green");
+      this.helmetparts[7].style("fill", "green");
+
       for (var i = 0; i < this.dotCount; i++) {
         tmpToFind = 'dot' + (i+1);
         this.dots.push(svg.selectAll("#" +  tmpToFind + ""));
@@ -129,93 +136,80 @@
           }, 1000);
     },
     runTest: function() {
-      /*
-                this.runAt = this.runAt || 0;
-                this.runAt++;
-                if( this.runAt >= this.helmetPartCount ){
-                    this.runAt = 0;
-                }
-                for( var i = 0 ; i < this.helmetPartCount ; i++){
-                    var colorPos = this.runAt + i;
-                    if( colorPos >= this.helmetPartCount){
-                        colorPos = colorPos - this.helmetPartCount;
-                    }
-                    this.helmetparts[i].style("fill", this.helmetcolors[colorPos]);
-                    this.helmetparts[i].style("outline", "black");
-                }
-                */
-      if (this.hasMoved !== true) {
-        this.hasMoved = true;
-
-        this.helmetparts[0].style("fill", "white");
-        this.helmetparts[1].style("fill", "DarkGray");
-        this.helmetparts[2].style("fill", "green");
-        this.helmetparts[3].style("fill", "#A0A0A0");
-        this.helmetparts[4].style("fill", "#C0C0C0");
-        this.helmetparts[5].style("fill", "green");
-        this.helmetparts[6].style("fill", "green");
-        this.helmetparts[7].style("fill", "green");
-
-        //--- Optionally add anything here to cycle with the beat
-        // beatChangeParts.push(this.helmetparts[2]);
-        // beatChangeParts.push(this.helmetparts[5]);
-        // beatChangeParts.push(this.helmetparts[6]);
-        // beatChangeParts.push(this.helmetparts[7]);
- 
-
-
-
-        //this.objwrap.attr("transform", "translate(" + ((tmpStarX)-(tmpW/2)-tmpOffset) + "," + ((tmpStarY)-(tmpH/2)-tmpOffset) + ")");
-
-
-        var tmpScaleObject = 1;
-        var tmpSize = this.objwrap.node().getBBox();
-
-        var tmpHelmetScale = 7;
-        if( showEQ ){
-          tmpHelmetScale = 3;
+      try{
+     
+        if (this.hasMoved !== true) {
+          this.hasMoved = true;
+  
+          
+          //--- Optionally add anything here to cycle with the beat
+          // beatChangeParts.push(this.helmetparts[2]);
+          // beatChangeParts.push(this.helmetparts[5]);
+          // beatChangeParts.push(this.helmetparts[6]);
+          // beatChangeParts.push(this.helmetparts[7]);
+   
+  
+  
+  
+          //this.objwrap.attr("transform", "translate(" + ((tmpStarX)-(tmpW/2)-tmpOffset) + "," + ((tmpStarY)-(tmpH/2)-tmpOffset) + ")");
+  
+  console.log('1')
+          var tmpScaleObject = 1;
+         // var tmpSize = this.objwrap.node().getBBox();
+  
+          var tmpHelmetScale = 7;
+          if( showEQ ){
+            tmpHelmetScale = 3;
+          }
+  console.log('2')
+  
+          // var tmpH = parseInt(tmpSize.height) * tmpHelmetScale;
+          // var tmpW = parseInt(tmpSize.width) * tmpHelmetScale;
+          //tmpStart = 100;
+          tmpOffset = 1;
+          var tmpStarX = 0; //this.svgWidth/2;
+          var tmpStarY = 0; //this.svgHeight/2;
+         
+          this.objwrap
+          .transition()
+          .duration(8000)
+          //.attr("transform", "translate(" + ((tmpStarX)-(tmpW/2)-tmpOffset) + "," + ((tmpStarY)-(tmpH/2)-tmpOffset) + ") scale(8) ")
+          .attr("transform", "scale(" + tmpHelmetScale + ") ")
+          .on('end', DaftPunkContoller.moveDone);
+  
         }
-
-        var tmpH = parseInt(tmpSize.height) * tmpHelmetScale;
-        var tmpW = parseInt(tmpSize.width) * tmpHelmetScale;
-        //tmpStart = 100;
-        tmpOffset = 1;
-        var tmpStarX = 0; //this.svgWidth/2;
-        var tmpStarY = 0; //this.svgHeight/2;
-
-        this.objwrap
-        .transition()
-        .duration(8000)
-        //.attr("transform", "translate(" + ((tmpStarX)-(tmpW/2)-tmpOffset) + "," + ((tmpStarY)-(tmpH/2)-tmpOffset) + ") scale(8) ")
-        .attr("transform", "scale(" + tmpHelmetScale + ") ")
-        .on('end', DaftPunkContoller.moveDone);
-
-      }
-      if (this.isMoveComplete == true) {
-        //-- cause a refresh to remove fly in anomolies
-        this.repaintWindow();
-        this.isMoveComplete = null;
-      }
-
-
-      //--- Start rainbowing the dots right away, even while flying in
-      this.runDotAt = this.runDotAt || 0;
-      this.runDotAt++;
-      if (this.runDotAt >= this.dotCount) {
-        this.runDotAt = 0;
-      }
-
-      for (var i = 0; i < this.dotCount; i++) {
-        var colorPos = this.runDotAt + i;
-        if (colorPos >= this.dotCount) {
-          colorPos = colorPos - this.dotCount;
+        if (this.isMoveComplete == true) {
+          //-- cause a refresh to remove fly in anomolies
+          this.repaintWindow();
+          this.isMoveComplete = null;
         }
-        // this.dots[i].style("fill", this.dotcolors[colorPos]);
-        this.dots[i].style("fill", this.volumeColorScale(eqData['B' + (i+1)]));
-        this.dots[i].style("outline", "black");
+  
+        //--- Start rainbowing the dots right away, even while flying in
+        this.runDotAt = this.runDotAt || 0;
+        this.runDotAt++;
+        if (this.runDotAt >= this.dotCount) {
+          this.runDotAt = 0;
+        }
+  
+        for (var i = 0; i < this.dotCount; i++) {
+          var colorPos = this.runDotAt + i;
+          if (colorPos >= this.dotCount) {
+            colorPos = colorPos - this.dotCount;
+          }
+          // this.dots[i].style("fill", this.dotcolors[colorPos]);
+          ThisApp.common.eqData = ThisApp.common.eqData || {};
+          if( (ThisApp.common.eqData) ){
+            this.dots[i].style("fill", this.volumeColorScale(ThisApp.common.eqData['B' + (i+1)]));
+            this.dots[i].style("outline", "black");
+          }
+        }
+      } catch (ex ){
+    console.log('error',ex)
       }
     }
+    
   };
+  
 
   function daftPunkStartup() {
     var tmpFromAt = 52;
@@ -316,6 +310,8 @@
 
 
     }
+    
+    
 
     DaftPunkContoller.init(svg, g);
 
@@ -333,11 +329,11 @@
     d3.interval(function () {
      
       try {
-        //console.log(eqData);
-        var tmpVol = eqData.vol || 0;
+        //console.log(ThisApp.common.eqData);
+        var tmpVol = ThisApp.common.eqData.vol || 0;
         //volume.attr("r", volScale(tmpVol));
 
-        var tmpBeatVal = eqData.kCycle;
+        var tmpBeatVal = ThisApp.common.eqData.kCycle;
         var tmpScaleStar = (tmpVol / 255);
         var tmpScaleVol = (tmpBeatVal / 255);
 
@@ -365,7 +361,7 @@
         if (showEQ) {
           for (var i = 0; i < bandCount; i++) {
             //console.log('data[i]',i,data[i]);
-            var tmpBVal = eqData['B' + (i+1)];
+            var tmpBVal = ThisApp.common.eqData['B' + (i+1)];
             var tmpDisp = displayBands[i];
             tmpDisp.transition()
             .duration(4)
@@ -442,60 +438,17 @@
 
   }
 
-var hasShown = 0;
-    function onstream(theStream) {
-      try {
-        var tmpData = JSON.parse(theStream);
-        eqData = tmpData;
-        //data = tmpData.B30;
-        //console.log("pos " + eqData.pos || '0');
-      } catch (ex) {
-        if (hasShown < 2) {
-          //temp -> console.error("Error on stream " + ex.toString());
-          hasShown++
-        }
-      }
-    }
-
 
   ControlCode.DaftPunkContoller = DaftPunkContoller;
 
-  ControlCode.connect = function() {
-    this.wstool.connect(this.connectURL);
-    this.wstool.onstream = onstream;
-
-  }
-  
-  ControlCode.disconnect = function(){
-    this.wstool.close(); 
-  }
   
   ControlCode._onInit = _onInit;
   function _onInit() {
     window.DaftPunk = this;
     this.showDebug = false;
     this.loadSpot('body', {}, homeTplName);
-    //this.connectURL = 'ws://10.0.0.211:7010/eq';
-    this.connectURL = 'ws://localhost:7010/eq';
-
-
     daftPunkStartup()
-
-    //DaftPunk.getSpot('body').get(1).remove();
-    DaftPunk.getSpot('body').css('background-color', 'green');
-
-    // this.colorElems = ThisApp.getByAttr$({
-    //     svguse: "color"
-    // });
-    // console.log('this.colorElems',this.colorElems);
-    // this.initColors();
-
-    this.winsock = this.parts.winsock;
-    this.wstool = this.winsock.wstool;
-    var self = this;
-    ThisApp.delay(1000).then(function(){
-      self.connect()
-    })
+    this.getSpot('body').css('background-color', 'green');
   }
 
   var ThisControl = {
@@ -506,3 +459,5 @@ var hasShown = 0;
     }};
   return ThisControl;
 })(ActionAppCore, $);
+
+
