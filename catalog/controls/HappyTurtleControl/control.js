@@ -246,6 +246,10 @@
   	frontright: {x:420,y:176},
   	body: {x:0,y:0},
   	shell: {x:0,y:0},
+  	pupils: {x:0,y:0},
+    eyeballs: {x:0,y:0},
+    nose: {x:0,y:0},
+    mouth: {x:662,y:326},
   	head: {x:553,y:295}
   }
   
@@ -255,6 +259,19 @@
   
   window.charDetails = _charDetails;
   window._charElems = _charElems;
+  window.tmouth = function(theTranslate, theScale){
+    HappyTurtle.transformItem('mouth',"translate(0," + theTranslate + ") scale(1," + theScale + ")")
+  }
+
+
+  ControlCode.transformItem = transformItem;
+  function transformItem(theItem,theTransform) {
+    console.log('transformItem',theItem,theTransform)
+      var tmpSpecs = _charDetails[theItem];
+      var tmpElem = _charElems[theItem].get(0);
+      tmpElem.setAttribute("transform", theTransform);
+  }  
+  
   
   ControlCode.rotateItem = rotateItem;
   function rotateItem(theItem,thePerc) {
