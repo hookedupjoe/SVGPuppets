@@ -62,7 +62,7 @@ thisPageSpecs.required = {
         ThisPage.initOnFirstLoad().then(
             function () {
                 //~_onFirstLoad//~
-//actions.connect();
+actions.connect();
 //~_onFirstLoad~//~
                 ThisPage._onActivate();
             }

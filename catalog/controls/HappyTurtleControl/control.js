@@ -262,7 +262,27 @@
   window.tmouth = function(theTranslate, theScale){
     HappyTurtle.transformItem('mouth',"translate(0," + theTranslate + ") scale(1," + theScale + ")")
   }
-
+  
+  // --- Strings: updown leftright openclose
+  window.pullString = function(theOptions){
+    var tmpOptions = theOptions || {};
+    
+    var tmpName = theOptions.name;
+    var tmpString = theOptions.string;
+    var tmpAmount = theOptions.amount;
+    console.log('tmpName',tmpName)
+    console.log('tmpString',tmpString)
+    console.log('tmpAmount',tmpAmount)
+    var tmpSpecs = _charDetails[tmpName];
+    var tmpElem = _charElems[tmpName].get(0);
+    
+    if( tmpName = 'pupils' && tmpString == 'updown'){
+      //--- 
+      rotateItem('pupils',tmpAmount);
+    }
+    
+    
+  }
 
   ControlCode.transformItem = transformItem;
   function transformItem(theItem,theTransform) {
