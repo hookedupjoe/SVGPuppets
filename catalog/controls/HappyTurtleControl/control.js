@@ -54,6 +54,8 @@
   	pupils: {x:0,y:0},
     eyeballs: {x:0,y:0},
     nose: {x:0,y:0},
+    eyebrowleft: {x:0,y:0},
+    eyebrowright: {x:0,y:0},
     mouth: {x:662,y:326},
   	head: {x:553,y:295}
   }
@@ -90,9 +92,9 @@
   ControlCode.movePupilsAmt = movePupilsAmt;
   function movePupilsAmt(theAmount, theString){
     var tmpName = 'pupils';
-    var tmpFromTranslate = -15;
-    var tmpToTranslate = 15;
-    var tmpTranslate = this.mapNumber(theAmount,0,255,tmpFromTranslate,tmpToTranslate);
+    var tmpFrom = -15;
+    var tmpTo = 15;
+    var tmpTranslate = this.mapNumber(theAmount,0,255,tmpFrom,tmpTo);
 
     if( theString == 'updown' ){
       translateItem(tmpName,0,tmpTranslate);
@@ -101,6 +103,56 @@
     }
   }
   
+  
+  ControlCode.moveTailAmt = moveTailAmt;
+  function moveTailAmt(theAmount, theString){
+    var tmpName = 'tail';
+    var tmpFrom = -12;
+    var tmpTo = 12;
+    var tmpAmt = this.mapNumber(theAmount,0,255,tmpFrom,tmpTo);
+
+    if( theString == 'updown' ){
+      rotateItem(tmpName,tmpAmt);
+    }
+  }
+  
+  ControlCode.moveEyebrowAmt = moveEyebrowAmt;
+  function moveEyebrowAmt(theName, theAmount, theString){
+    var tmpName = theName;
+    var tmpFrom = -10;
+    var tmpTo = 10;
+    var tmpAmt = this.mapNumber(theAmount,0,255,tmpFrom,tmpTo);
+
+    if( theString == 'updown' ){
+      translateItem(tmpName,0,tmpAmt);
+    } else if( theString == 'leftright' ){
+      translateItem(tmpName,tmpAmt,0);
+    }
+  }
+  
+  ControlCode.moveShellAmt = moveShellAmt;
+  function moveShellAmt(theAmount, theString){
+    var tmpName = 'shell';
+    var tmpFrom = -10;
+    var tmpTo = 10;
+    var tmpAmt = this.mapNumber(theAmount,0,255,tmpFrom,tmpTo);
+
+    if( theString == 'updown' ){
+      translateItem(tmpName,0,tmpAmt);
+    }
+  }
+  
+  ControlCode.moveBodyAmt = moveBodyAmt;
+  function moveBodyAmt(theAmount, theString){
+    var tmpName = 'body';
+    var tmpFrom = -10;
+    var tmpTo = 10;
+    var tmpAmt = this.mapNumber(theAmount,0,255,tmpFrom,tmpTo);
+
+    if( theString == 'updown' ){
+      translateItem(tmpName,0,tmpAmt);
+    }
+  }
   
   
   ControlCode.moveLegAmt = moveLegAmt;
@@ -131,11 +183,19 @@
     var tmpElem = _charElems[tmpName].get(0);
     
     if( tmpName == 'pupils' ){
-      this.movePupilsAmt(tmpAmount, tmpString)
+      this.movePupilsAmt(tmpAmount, tmpString);
     } else if( tmpName == 'mouth'){
       this.moveMouthAmt(tmpAmount, tmpString);
+    } else if( tmpName == 'tail'){
+      this.moveTailAmt(tmpAmount, tmpString);
+    } else if( tmpName == 'shell'){
+      this.moveShellAmt(tmpAmount, tmpString);
+    } else if( tmpName == 'body'){
+      this.moveBodyAmt(tmpAmount, tmpString);
+    } else if( tmpName == 'eyebrowleft' || tmpName == 'eyebrowright'){
+      this.moveEyebrowAmt(tmpName, tmpAmount, tmpString)
     } else if( tmpName == 'frontleft' || tmpName == 'frontright' || tmpName == 'backleft' || tmpName == 'backright'){
-      this.moveLegAmt(tmpName,tmpAmount, tmpString)
+      this.moveLegAmt(tmpName, tmpAmount, tmpString)
     }
     
   }
