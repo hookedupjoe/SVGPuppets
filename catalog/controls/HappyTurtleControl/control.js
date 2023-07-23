@@ -97,9 +97,9 @@
     var tmpTranslate = this.mapNumber(theAmount,0,255,tmpFrom,tmpTo);
 
     if( theString == 'updown' ){
-      translateItem(tmpName,0,tmpTranslate);
+      translateItem(tmpName,false,tmpTranslate);
     } else if( theString == 'leftright' ){
-      translateItem(tmpName,tmpTranslate,0);
+      translateItem(tmpName,tmpTranslate,false);
     }
   }
   
@@ -124,9 +124,9 @@
     var tmpAmt = this.mapNumber(theAmount,0,255,tmpFrom,tmpTo);
 
     if( theString == 'updown' ){
-      translateItem(tmpName,0,tmpAmt);
+      translateItem(tmpName,false,tmpAmt);
     } else if( theString == 'leftright' ){
-      translateItem(tmpName,tmpAmt,0);
+      translateItem(tmpName,tmpAmt,false);
     }
   }
   
@@ -138,7 +138,7 @@
     var tmpAmt = this.mapNumber(theAmount,0,255,tmpFrom,tmpTo);
 
     if( theString == 'updown' ){
-      translateItem(tmpName,0,tmpAmt);
+      translateItem(tmpName,false,tmpAmt);
     }
   }
   
@@ -150,7 +150,7 @@
     var tmpAmt = this.mapNumber(theAmount,0,255,tmpFrom,tmpTo);
 
     if( theString == 'updown' ){
-      translateItem(tmpName,0,tmpAmt);
+      translateItem(tmpName,false,tmpAmt);
     }
   }
   
@@ -168,7 +168,7 @@
     if( theString == 'forwardback' ){
       rotateItem(theName,tmpRotate);
     } else if( theString == 'updown' ){
-      translateItem(theName,0,tmpTranslate);
+      translateItem(theName,false,tmpTranslate);
     }
   }
   
@@ -209,8 +209,28 @@
   
   ControlCode.translateItem = translateItem;
   function translateItem(theItem,theXAmt, theYAmt) {
-      var tmpElem = _charElems[theItem].get(0);
-      tmpElem.setAttribute("transform", "translate(" + theXAmt + "," + theYAmt + ")");
+      var tmpEl = _charElems[theItem];
+      var tmpElem = tmpEl.get(0);
+      var tmpIsX = (theXAmt !== false);
+      var tmpIsY = (theYAmt !== false);
+      var tmpXAmt = tmpIsX ? theXAmt : 0;
+      var tmpYAmt = tmpIsY ? theYAmt : 0;
+      var tmpData = tmpEl.data() || {};
+      console.log('tmpElem data',tmpData);
+      
+      //--- Save element(s) data that is being set
+      if( tmpIsX ){
+        tmpEl.data('tX',tmpXAmt);
+      } else {
+        tmpXAmt = tmpEl.data('tX') || 0;
+      }
+      if( tmpIsY ){
+        tmpEl.data('tY',tmpYAmt)
+      } else {
+        tmpYAmt = tmpEl.data('tY') || 0;
+      }
+      
+      tmpElem.setAttribute("transform", "translate(" + tmpXAmt + "," + tmpYAmt + ")");
   } 
   
   ControlCode.rotateItem = rotateItem;
