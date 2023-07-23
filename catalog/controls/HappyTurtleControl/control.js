@@ -265,10 +265,10 @@
     HappyTurtle.transformItem('mouth',"translate(0," + theTranslate + ") scale(1," + theScale + ")")
   }
   
-  function getRelativeNumber (number, inMin, inMax, outMin, outMax) {
-    return Math.round((number - inMin) * (outMax - outMin) / (inMax - inMin) + outMin);
+  ControlCode.mapNumber = mapNumber;
+  function mapNumber (number, inMin, inMax, outMin, outMax) {
+    return (number - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
   }
-  ControlCode.getRelativeNumber = getRelativeNumber;
 
   //--- Amt = 0-255
   ControlCode.moveMouthAmt = moveMouthAmt;
@@ -277,34 +277,22 @@
     var tmpTo = 1.75;
 
     var tmpPerc = (theAmount/256);
-    console.log('tmpPerc',tmpPerc);
     
     var tmpNewAmt = tmpPerc * 1.5; //(Math.abs(tmpFrom) + Math.abs(tmpTo));
     tmpNewAmt += tmpFrom;
     
     var tmpScale = tmpNewAmt;
-    console.log('tmpScale',tmpScale);
 
 
-    var tmpMappedAmt = this.getRelativeNumber(theAmount,0,255,160,-160)
-    console.log('tmpMappedAmt',tmpMappedAmt);
-    // var tmpTotal = 320;
-    // tmpOffset = -160;
-    // tmpNewAmt = tmpPerc * tmpTotal; //(Math.abs(tmpFrom) + Math.abs(tmpTo));
-    // console.log('tmpNewAmt 1',tmpNewAmt,tmpOffset);
- 
-    // tmpNewAmt += (tmpOffset);
-    // console.log('tmpNewAmt 2',tmpNewAmt);
-    // var tmpDiff = tmpOffset*tmpPerc;
-    // console.log('tmpDiff',tmpDiff)
+    var tmpMappedAmt = this.mapNumber(theAmount,0,255,160,-160)
     var tmpTranslate = tmpMappedAmt;
-    console.log('tmpScale',tmpScale);
-    console.log('tmpTranslate',tmpTranslate);
+    // console.log('tmpScale',tmpScale);
+    // console.log('tmpTranslate',tmpTranslate);
     
     this.transformItem('mouth',"translate(0," + tmpTranslate + ") scale(1," + tmpScale + ")")
   }
   
-  // --- Strings: updown forwardback openclose
+  // --- Strings: leftright updown forwardback openclose
   ControlCode.pullString = function(theOptions){
     var tmpOptions = theOptions || {};
     
@@ -317,14 +305,19 @@
     var tmpSpecs = _charDetails[tmpName];
     var tmpElem = _charElems[tmpName].get(0);
     
-    if( tmpName == 'pupils' && tmpString == 'updown'){
-      var tmpFrom = -1.5;
-      var tmpTo = 1.5;
+    if( tmpName == 'pupils' ){
+      var tmpFrom = -15;
+      var tmpTo = 15;
       var tmpPerc = (tmpAmount/256);
       var tmpNewAmt = tmpPerc * (Math.abs(tmpFrom) + Math.abs(tmpTo));
       tmpNewAmt += tmpFrom;
+      if( tmpString == 'updown' ){
+        translateItem(tmpName,0,tmpNewAmt);
+      } else if( tmpString == 'leftright' ){
+        console.log('tmpNewAmt',tmpNewAmt);
+        translateItem(tmpName,tmpNewAmt,0);
+      }
       // console.log("tmpNewAmt",tmpNewAmt);
-      rotateItem(tmpName,tmpNewAmt);
     } else if( tmpName == 'mouth' && tmpString == 'openclose'){
       this.moveMouthAmt(tmpAmount);
     } else if( tmpName == 'frontleft' || tmpName == 'frontright' || tmpName == 'backleft' || tmpName == 'backright'){
