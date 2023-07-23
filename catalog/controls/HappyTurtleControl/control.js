@@ -48,6 +48,24 @@
             }
           }
         }
+      },
+      pupils: {
+        _strings: [
+          "updown",
+          "leftright"
+        ],
+        updown: {
+          translate: {y:{
+            from: -15,
+            to: 15
+          }}
+        },
+        leftright: {
+          translate: {x: {
+            from: -15,
+            to: 15
+          }}
+        }
       }
     }
   }
@@ -237,7 +255,6 @@
   }
   ControlCode.adjustString = function(theOptions) {
     var tmpOptions = theOptions || {};
-    
     var tmpName = theOptions.name;
     var tmpString = theOptions.string;
     var tmpAmount = theOptions.amount;
@@ -246,13 +263,17 @@
     var tmpEl = _charElems[tmpName];
     var tmpStringSpecs = tmpSpecs[tmpString];
     this.adjCharElement(tmpEl, tmpAmount, tmpStringSpecs);
-
   }
+  
   ControlCode.adjCharElement = function(theEl, theAmount, theSpecs){
     if( theSpecs.rotate ){
       this.rotateElem(theEl, theAmount, theSpecs.rotate);
     }
+    if( theSpecs.translate ){
+      this.translateElem(theEl, theAmount, theSpecs.translate);
+    }
   }
+
    ControlCode.rotateElem = rotateElem;
    function rotateElem(theEl, theAmount, theSpecs){
     var tmpSpecs = theSpecs || {};
@@ -269,6 +290,42 @@
     tmpElem.setAttribute("transform", "rotate(" + tmpAmt + "," + tmpOffX + "," + tmpOffY + ")");
   
    }
+
+   
+  ControlCode.translateElem = translateElem;
+  function translateElem(theEl, theAmount, theSpecs) {
+    var tmpElem = theEl.get(0);
+
+    var tmpXAmt = 0;
+    var tmpYAmt = 0;
+
+    var tmpIsX = false;
+    var tmpIsY = false;
+    
+    if( theSpecs.x ){
+      tmpIsX = true;
+      tmpXAmt = this.mapNumber(theAmount, 0, 255, theSpecs.x.from, theSpecs.x.to);
+    }
+    if( theSpecs.y ){
+      tmpIsY = true;
+      tmpYAmt = this.mapNumber(theAmount, 0, 255, theSpecs.y.from, theSpecs.y.to);
+    }
+  
+    //--- Save element(s) data that is being set
+    if (tmpIsX) {
+      tmpEl.data('tX', tmpXAmt);
+    } else {
+      tmpXAmt = tmpEl.data('tX') || 0;
+    }
+    if (tmpIsY) {
+      tmpEl.data('tY', tmpYAmt)
+    } else {
+      tmpYAmt = tmpEl.data('tY') || 0;
+    }
+
+    tmpElem.setAttribute("transform", "translate(" + tmpXAmt + "," + tmpYAmt + ")");
+  }
+  
 
   // --- Strings: leftright updown forwardback openclose
   ControlCode.pullString = function(theOptions) {
