@@ -265,6 +265,11 @@
     HappyTurtle.transformItem('mouth',"translate(0," + theTranslate + ") scale(1," + theScale + ")")
   }
   
+  function getRelativeNumber (number, inMin, inMax, outMin, outMax) {
+    return Math.round((number - inMin) * (outMax - outMin) / (inMax - inMin) + outMin);
+  }
+  ControlCode.getRelativeNumber = getRelativeNumber;
+
   //--- Amt = 0-255
   ControlCode.moveMouthAmt = moveMouthAmt;
   function moveMouthAmt(theAmount){
@@ -274,19 +279,25 @@
     var tmpPerc = (theAmount/256);
     console.log('tmpPerc',tmpPerc);
     
-    var tmpNewAmt = tmpPerc * 2; //(Math.abs(tmpFrom) + Math.abs(tmpTo));
+    var tmpNewAmt = tmpPerc * 1.5; //(Math.abs(tmpFrom) + Math.abs(tmpTo));
+    tmpNewAmt += tmpFrom;
     
     var tmpScale = tmpNewAmt;
     console.log('tmpScale',tmpScale);
-    
-    tmpFrom = 160;
-    tmpTo = -160;
-    tmpNewAmt = tmpPerc * 320; //(Math.abs(tmpFrom) + Math.abs(tmpTo));
-    console.log('tmpNewAmt 1',tmpNewAmt,tmpFrom);
+
+
+    var tmpMappedAmt = this.getRelativeNumber(theAmount,0,255,160,-160)
+    console.log('tmpMappedAmt',tmpMappedAmt);
+    // var tmpTotal = 320;
+    // tmpOffset = -160;
+    // tmpNewAmt = tmpPerc * tmpTotal; //(Math.abs(tmpFrom) + Math.abs(tmpTo));
+    // console.log('tmpNewAmt 1',tmpNewAmt,tmpOffset);
  
-    tmpNewAmt -= tmpFrom;
-    console.log('tmpNewAmt 2',tmpNewAmt);
-    var tmpTranslate = tmpNewAmt;
+    // tmpNewAmt += (tmpOffset);
+    // console.log('tmpNewAmt 2',tmpNewAmt);
+    // var tmpDiff = tmpOffset*tmpPerc;
+    // console.log('tmpDiff',tmpDiff)
+    var tmpTranslate = tmpMappedAmt;
     console.log('tmpScale',tmpScale);
     console.log('tmpTranslate',tmpTranslate);
     
