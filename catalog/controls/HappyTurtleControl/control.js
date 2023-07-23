@@ -235,7 +235,7 @@
       _charElems[tmpID] = tmpEntry;
     }
     
-    console.log('._charElems',_charElems);
+    //console.log('._charElems',_charElems);
   }
    
   var _charDetails = {
@@ -259,28 +259,76 @@
   
   window.charDetails = _charDetails;
   window._charElems = _charElems;
-  window.tmouth = function(theTranslate, theScale){
+  window.tmouth = moveMouth
+  
+  function moveMouth(theTranslate, theScale){
     HappyTurtle.transformItem('mouth',"translate(0," + theTranslate + ") scale(1," + theScale + ")")
   }
   
-  // --- Strings: updown leftright openclose
-  window.pullString = function(theOptions){
+  //--- Amt = 0-255
+  ControlCode.moveMouthAmt = moveMouthAmt;
+  function moveMouthAmt(theAmount){
+    var tmpFrom = .25;
+    var tmpTo = 1.75;
+
+    var tmpPerc = (theAmount/256);
+    console.log('tmpPerc',tmpPerc);
+    
+    var tmpNewAmt = tmpPerc * 2; //(Math.abs(tmpFrom) + Math.abs(tmpTo));
+    
+    var tmpScale = tmpNewAmt;
+    console.log('tmpScale',tmpScale);
+    
+    tmpFrom = 160;
+    tmpTo = -160;
+    tmpNewAmt = tmpPerc * 320; //(Math.abs(tmpFrom) + Math.abs(tmpTo));
+    console.log('tmpNewAmt 1',tmpNewAmt,tmpFrom);
+ 
+    tmpNewAmt -= tmpFrom;
+    console.log('tmpNewAmt 2',tmpNewAmt);
+    var tmpTranslate = tmpNewAmt;
+    console.log('tmpScale',tmpScale);
+    console.log('tmpTranslate',tmpTranslate);
+    
+    this.transformItem('mouth',"translate(0," + tmpTranslate + ") scale(1," + tmpScale + ")")
+  }
+  
+  // --- Strings: updown forwardback openclose
+  ControlCode.pullString = function(theOptions){
     var tmpOptions = theOptions || {};
     
     var tmpName = theOptions.name;
     var tmpString = theOptions.string;
     var tmpAmount = theOptions.amount;
-    console.log('tmpName',tmpName)
-    console.log('tmpString',tmpString)
-    console.log('tmpAmount',tmpAmount)
+    // console.log('tmpName',tmpName)
+    // console.log('tmpString',tmpString)
+    // console.log('tmpAmount',tmpAmount)
     var tmpSpecs = _charDetails[tmpName];
     var tmpElem = _charElems[tmpName].get(0);
     
-    if( tmpName = 'pupils' && tmpString == 'updown'){
-      //--- 
-      rotateItem('pupils',tmpAmount);
+    if( tmpName == 'pupils' && tmpString == 'updown'){
+      var tmpFrom = -1.5;
+      var tmpTo = 1.5;
+      var tmpPerc = (tmpAmount/256);
+      var tmpNewAmt = tmpPerc * (Math.abs(tmpFrom) + Math.abs(tmpTo));
+      tmpNewAmt += tmpFrom;
+      // console.log("tmpNewAmt",tmpNewAmt);
+      rotateItem(tmpName,tmpNewAmt);
+    } else if( tmpName == 'mouth' && tmpString == 'openclose'){
+      this.moveMouthAmt(tmpAmount);
+    } else if( tmpName == 'frontleft' || tmpName == 'frontright' || tmpName == 'backleft' || tmpName == 'backright'){
+      var tmpFrom = -15;
+      var tmpTo = 15;
+      var tmpPerc = (tmpAmount/256);
+      var tmpNewAmt = tmpPerc * 30; //(Math.abs(tmpFrom) + Math.abs(tmpTo));
+      tmpNewAmt += tmpFrom;
+      if( tmpString == 'forwardback' ){
+        rotateItem(tmpName,tmpNewAmt);
+      } else if( tmpString == 'updown' ){
+      console.log(tmpName + " tmpNewAmt",tmpNewAmt);
+        translateItem(tmpName,0,tmpNewAmt); 
+      }
     }
-    
     
   }
 
@@ -292,6 +340,11 @@
       tmpElem.setAttribute("transform", theTransform);
   }  
   
+  ControlCode.translateItem = translateItem;
+  function translateItem(theItem,theXAmt, theYAmt) {
+      var tmpElem = _charElems[theItem].get(0);
+      tmpElem.setAttribute("transform", "translate(" + theXAmt + "," + theYAmt + ")");
+  } 
   
   ControlCode.rotateItem = rotateItem;
   function rotateItem(theItem,thePerc) {
