@@ -88,6 +88,14 @@ actions.runTest = runTest;
     function runTest() {
        alert('runTest');
     };
+
+
+actions.startDancing = function(){
+  this.parts.center.startDancing();
+}
+actions.stopDancing = function(){
+  this.parts.center.stopDancing();
+}
 //~YourPageCode~//~
 
 })(ActionAppCore, $);

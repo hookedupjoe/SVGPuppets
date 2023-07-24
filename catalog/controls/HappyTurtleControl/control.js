@@ -146,6 +146,47 @@
 
   }
 
+  var watchDog1 = 0;
+  ControlCode.startDancing = startDancing;
+  function startDancing(){
+    // update the display based on data
+    this.danceInterval = d3.interval(function () {
+     
+      try {
+       // var tmpVol = ThisApp.common.eqData.B15 || 0;
+        HappyTurtle.pullString({name:'frontleft', amount:ThisApp.common.eqData.B2,  string: 'updown'});
+        HappyTurtle.pullString({name:'backleft', amount:ThisApp.common.eqData.B3,  string: 'updown'});
+        HappyTurtle.pullString({name:'backright', amount:ThisApp.common.eqData.B4,  string: 'updown'});
+        HappyTurtle.pullString({name:'frontright', amount:ThisApp.common.eqData.B5,  string: 'updown'});
+        HappyTurtle.pullString({name:'body', amount:ThisApp.common.eqData.B28,  string: 'updown'});
+        HappyTurtle.pullString({name:'shell', amount:ThisApp.common.eqData.B29,  string: 'updown'});
+
+        HappyTurtle.pullString({name:'eyebrowleft', amount:ThisApp.common.eqData.B15,  string: 'openclose'});
+        HappyTurtle.pullString({name:'eyebrowright', amount:ThisApp.common.eqData.B15,  string: 'openclose'});
+        //HappyTurtle.pullString({name:'mouth', amount:ThisApp.common.eqData.B8,  string: 'openclose'});
+        HappyTurtle.pullString({name:'pupils', amount:ThisApp.common.eqData.B30,  string: 'updown'});
+        HappyTurtle.pullString({name:'pupils', amount:ThisApp.common.eqData.B30,  string: 'leftright'});
+        
+        
+    } catch (ex) {
+        //temp -> 
+        if( watchDog1++ > 10){
+          return;
+        }
+        console.error("Error ", ex);
+      }
+    },
+      5);
+  }
+  
+  ControlCode.stopDancing = stopDancing;
+  function stopDancing(){
+    if( !this.danceInterval ) return;
+      
+    this.danceInterval.stop();
+  }
+
+  
   ControlCode.movePupilsAmt = movePupilsAmt;
   function movePupilsAmt(theAmount, theString) {
     var tmpName = 'pupils';
