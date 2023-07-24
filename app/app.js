@@ -5,7 +5,7 @@
   try {
 
 
-    var tmpPageNames = ["Home","CozyGuitar","DaftPunkHelmet"];
+    var tmpPageNames = ["Home","DaftPunkHelmet","Etchy"];
     var tmpPluginNames = [];
 
     if (typeof (window.cordova) == 'undefined') {

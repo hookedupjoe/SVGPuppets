@@ -432,7 +432,7 @@
     this.showDebug = false;
     ThisControl = this;
 
-    this.moveMouth = false
+    this.moveMouth = true
 
     this.loadSpot('body', {}, 'HappyTurtle');
     this.initElems();

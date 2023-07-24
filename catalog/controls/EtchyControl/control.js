@@ -58,24 +58,16 @@
   var _charDetails = {
     
     leftarm: {
-      x: 62,
-      y: 53
+      x: 440,
+      y: 218
     },
-    body: {
-      x: 0,
-      y: 0
-    },
-    pupils: {
-      x: 0,
-      y: 0
-    },
-    eyeballs: {
-      x: 0,
-      y: 0
+    rightarm: {
+      x: 300,
+      y: 218
     },
     head: {
-      x: 553,
-      y: 295
+      x: 350,
+      y: 100
     }
   }
 
@@ -92,34 +84,20 @@
   ControlCode.moveMouthAmt = moveMouthAmt;
   function moveMouthAmt(theAmount, theString) {
 
-    if (theString == 'openclose') {
-      var tmpFromScale = .25;
-      var tmpToScale = 1.75;
-      var tmpFromTranslate = 160;
-      var tmpToTranslate = -160;
+   var tmpName = 'mouth';
+    var tmpFrom = -10;
+    var tmpTo = 16;
+    var tmpAmt = this.mapNumber(theAmount, 0, 255, tmpFrom, tmpTo);
 
-      var tmpScale = this.mapNumber(theAmount, 0, 255, tmpFromScale, tmpToScale);
-      var tmpTranslate = this.mapNumber(theAmount, 0, 255, tmpFromTranslate, tmpToTranslate);
-
-      this.transformItem('mouth', "translate(0," + tmpTranslate + ") scale(1," + tmpScale + ")")
+    if (theString == 'updown') {
+      translateItem(tmpName, 0, tmpAmt);
     }
-
   }
 
   ControlCode.reactionDance1 = function(){
-        this.pullString({name:'frontleft', amount:ThisApp.common.eqData.B2,  string: 'updown'});
-        this.pullString({name:'backleft', amount:ThisApp.common.eqData.B3,  string: 'updown'});
-        this.pullString({name:'backright', amount:ThisApp.common.eqData.B2,  string: 'updown'});
-        this.pullString({name:'frontright', amount:ThisApp.common.eqData.B3,  string: 'updown'});
-        this.pullString({name:'body', amount:ThisApp.common.eqData.B15,  string: 'updown'});
-        this.pullString({name:'shell', amount:ThisApp.common.eqData.B16,  string: 'updown'});
-        //this.pullString({name:'head', amount:ThisApp.common.eqData.kCycle,  string: 'updown'});
+        this.pullString({name:'leftarm', amount:255,  string: 'updown'});
+        this.pullString({name:'rightarm', amount:255,  string: 'updown'});
 
-        this.pullString({name:'eyebrowleft', amount:ThisApp.common.eqData.B28,  string: 'updown'});
-        this.pullString({name:'eyebrowright', amount:ThisApp.common.eqData.B29,  string: 'updown'});
-        //HappyTurtle.pullString({name:'pupils', amount:ThisApp.common.eqData.B30,  string: 'updown'});
-        //HappyTurtle.pullString({name:'pupils', amount:ThisApp.common.eqData.B30,  string: 'leftright'});
-        
         if( this.moveMouth ){
           this.reactionSpeak();
         }
@@ -127,19 +105,8 @@
   }
   
   ControlCode.reactionDance2 = function(){
-        this.pullString({name:'frontleft', amount:ThisApp.common.eqData.B11,  string: 'forwardback'});
-        this.pullString({name:'frontright', amount:ThisApp.common.eqData.B14,  string: 'forwardback'});
-        this.pullString({name:'backleft', amount:ThisApp.common.eqData.B12,  string: 'updown'});
-        this.pullString({name:'backright', amount:ThisApp.common.eqData.B13,  string: 'updown'});
-        this.pullString({name:'body', amount:ThisApp.common.eqData.B2,  string: 'updown'});
-        this.pullString({name:'shell', amount:ThisApp.common.eqData.B3,  string: 'updown', reverse: true});
-        //this.pullString({name:'shell', amount:ThisApp.common.eqData.kCycle,  string: 'updown'});
-
-        this.pullString({name:'eyebrowleft', amount:ThisApp.common.eqData.B28,  string: 'updown'});
-        this.pullString({name:'eyebrowright', amount:ThisApp.common.eqData.B29,  string: 'updown'});
-        //HappyTurtle.pullString({name:'pupils', amount:ThisApp.common.eqData.B30,  string: 'updown'});
-        //HappyTurtle.pullString({name:'pupils', amount:ThisApp.common.eqData.B30,  string: 'leftright'});
-        //this.reactionSpeak();
+        this.pullString({name:'leftarm', amount:255,  string: 'updown'});
+        this.pullString({name:'rightarm', amount:255,  string: 'updown'});
         if( this.moveMouth ){
           this.reactionSpeak();
         }
@@ -167,7 +134,7 @@
       tmpAmt = 40;
     }
     
-    this.pullString({name:'mouth', amount:tmpAmt,  string: 'openclose'});
+    this.pullString({name:'mouth', amount:tmpAmt,  string: 'updown'});
 
   }
   
@@ -222,8 +189,8 @@
   ControlCode.movePupilsAmt = movePupilsAmt;
   function movePupilsAmt(theAmount, theString) {
     var tmpName = 'pupils';
-    var tmpFrom = -15;
-    var tmpTo = 15;
+    var tmpFrom = -7;
+    var tmpTo = 7;
     var tmpTranslate = this.mapNumber(theAmount, 0, 255, tmpFrom, tmpTo);
 
     if (theString == 'updown') {
@@ -249,26 +216,37 @@
   ControlCode.moveHeadAmt = moveHeadAmt;
   function moveHeadAmt(theAmount, theString) {
     var tmpName = 'head';
-    var tmpFrom = -15;
-    var tmpTo = 15;
-    var tmpAmt = this.mapNumber(theAmount, 0, 255, tmpFrom, tmpTo);
-
     if (theString == 'updown') {
+      var tmpFrom = -10;
+      var tmpTo = 10;
+      var tmpAmt = this.mapNumber(theAmount, 0, 255, tmpFrom, tmpTo);
+      translateItem(tmpName, false, tmpAmt);
+    } else if (theString == 'leftright') {
+      var tmpFrom = -8;
+      var tmpTo = 8;
+      var tmpAmt = this.mapNumber(theAmount, 0, 255, tmpFrom, tmpTo);
+      translateItem(tmpName, tmpAmt, false);
+    } else if (theString == 'tilt') {
+      var tmpFrom = -10;
+      var tmpTo = 10;
+      var tmpAmt = this.mapNumber(theAmount, 0, 255, tmpFrom, tmpTo);
       rotateItem(tmpName, tmpAmt);
     }
   }
 
-  ControlCode.moveEyebrowAmt = moveEyebrowAmt;
-  function moveEyebrowAmt(theName, theAmount, theString) {
+  ControlCode.moveArmAmt = moveArmAmt;
+  function moveArmAmt(theName, theAmount, theString) {
     var tmpName = theName;
-    var tmpFrom = -10;
+    var tmpFrom = -100;
     var tmpTo = 10;
+    if( theName == 'rightarm'){
+      tmpFrom = 107;
+      tmpTo = -10;
+    }
     var tmpAmt = this.mapNumber(theAmount, 0, 255, tmpFrom, tmpTo);
 
     if (theString == 'updown') {
-      translateItem(tmpName, false, tmpAmt);
-    } else if (theString == 'leftright') {
-      translateItem(tmpName, tmpAmt, false);
+      rotateItem(tmpName, tmpAmt);
     }
   }
 
@@ -336,8 +314,8 @@
       this.moveShellAmt(tmpAmount, tmpString);
     } else if (tmpName == 'body') {
       this.moveBodyAmt(tmpAmount, tmpString);
-    } else if (tmpName == 'eyebrowleft' || tmpName == 'eyebrowright') {
-      this.moveEyebrowAmt(tmpName, tmpAmount, tmpString)
+    } else if (tmpName == 'leftarm' || tmpName == 'rightarm') {
+      this.moveArmAmt(tmpName, tmpAmount, tmpString)
     } else if (tmpName == 'frontleft' || tmpName == 'frontright' || tmpName == 'backleft' || tmpName == 'backright') {
       this.moveLegAmt(tmpName, tmpAmount, tmpString)
     }
@@ -396,7 +374,7 @@
     this.showDebug = false;
     ThisControl = this;
 
-    this.moveMouth = false
+    this.moveMouth = true
 
     this.loadSpot('body', {}, 'EtchyHome');
     this.initElems();
