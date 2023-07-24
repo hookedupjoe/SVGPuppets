@@ -28,47 +28,6 @@
 
   var ControlCode = {};
 
-  var _charSpecs = {
-    inputScale: {
-      from: 0,
-      to: 255
-    },
-    index: {
-      tail: {
-        _strings: [
-          "updown"
-        ],
-        updown: {
-          rotate: {
-            from: -12,
-            to: 12,
-            offset: {
-              x: 83,
-              y: 270
-            }
-          }
-        }
-      },
-      pupils: {
-        _strings: [
-          "updown",
-          "leftright"
-        ],
-        updown: {
-          translate: {y:{
-            from: -15,
-            to: 15
-          }}
-        },
-        leftright: {
-          translate: {x: {
-            from: -15,
-            to: 15
-          }}
-        }
-      }
-    }
-  }
 
   ControlCode.initElems = initElems;
   function initElems() {
@@ -85,6 +44,22 @@
 
   }
 
+  var _charSpecs = {
+    tail: {strings:['updown']},
+    frontleft: {strings:['updown','forwardback']},
+    backleft: {strings:['updown','forwardback']},
+    backright: {strings:['updown','forwardback']},
+    frontright: {strings:['updown','forwardback']},
+    body: {strings:['updown']},
+    shell: {strings:['updown']},
+    pupils: {strings:['updown','leftright']},
+    eyebrowleft: {strings:['updown']},
+    eyebrowright: {strings:['updown']},
+    mouth: {strings:['openclose']},
+    head: {strings:['updown']},
+  };
+  
+  //=== ToDo: Refactor and change structure ..
   var _charDetails = {
     tail: {
       x: 83,
@@ -189,8 +164,20 @@
   ControlCode.moveTailAmt = moveTailAmt;
   function moveTailAmt(theAmount, theString) {
     var tmpName = 'tail';
-    var tmpFrom = -12;
-    var tmpTo = 12;
+    var tmpFrom = 12;
+    var tmpTo = -12;
+    var tmpAmt = this.mapNumber(theAmount, 0, 255, tmpFrom, tmpTo);
+
+    if (theString == 'updown') {
+      rotateItem(tmpName, tmpAmt);
+    }
+  }
+  
+  ControlCode.moveHeadAmt = moveHeadAmt;
+  function moveHeadAmt(theAmount, theString) {
+    var tmpName = 'head';
+    var tmpFrom = -15;
+    var tmpTo = 15;
     var tmpAmt = this.mapNumber(theAmount, 0, 255, tmpFrom, tmpTo);
 
     if (theString == 'updown') {
@@ -253,80 +240,7 @@
       translateItem(theName, false, tmpTranslate);
     }
   }
-  ControlCode.adjustString = function(theOptions) {
-    var tmpOptions = theOptions || {};
-    var tmpName = theOptions.name;
-    var tmpString = theOptions.string;
-    var tmpAmount = theOptions.amount;
-    var tmpSpecs = _charSpecs.index[tmpName];
-    console.log('tmpSpecs',tmpName, tmpSpecs);
-    var tmpEl = _charElems[tmpName];
-    var tmpStringSpecs = tmpSpecs[tmpString];
-    this.adjCharElement(tmpEl, tmpAmount, tmpStringSpecs);
-  }
   
-  ControlCode.adjCharElement = function(theEl, theAmount, theSpecs){
-    if( theSpecs.rotate ){
-      this.rotateElem(theEl, theAmount, theSpecs.rotate);
-    }
-    if( theSpecs.translate ){
-      this.translateElem(theEl, theAmount, theSpecs.translate);
-    }
-  }
-
-   ControlCode.rotateElem = rotateElem;
-   function rotateElem(theEl, theAmount, theSpecs){
-    var tmpSpecs = theSpecs || {};
-    var tmpElem = theEl.get(0);
-    
-    var tmpFrom = tmpSpecs.from || 0;
-    var tmpTo = tmpSpecs.to || 0;
-    var tmpAmt = this.mapNumber(theAmount, 0, 255, tmpFrom, tmpTo);
-    
-    var tmpOffset = tmpSpecs.offset || {};
-    var tmpOffX = tmpOffset.x || 0;
-    var tmpOffY = tmpOffset.y || 0;
-    
-    tmpElem.setAttribute("transform", "rotate(" + tmpAmt + "," + tmpOffX + "," + tmpOffY + ")");
-  
-   }
-
-   
-  ControlCode.translateElem = translateElem;
-  function translateElem(theEl, theAmount, theSpecs) {
-    var tmpElem = theEl.get(0);
-
-    var tmpXAmt = 0;
-    var tmpYAmt = 0;
-
-    var tmpIsX = false;
-    var tmpIsY = false;
-    
-    if( theSpecs.x ){
-      tmpIsX = true;
-      tmpXAmt = this.mapNumber(theAmount, 0, 255, theSpecs.x.from, theSpecs.x.to);
-    }
-    if( theSpecs.y ){
-      tmpIsY = true;
-      tmpYAmt = this.mapNumber(theAmount, 0, 255, theSpecs.y.from, theSpecs.y.to);
-    }
-  
-    //--- Save element(s) data that is being set
-    if (tmpIsX) {
-      tmpEl.data('tX', tmpXAmt);
-    } else {
-      tmpXAmt = tmpEl.data('tX') || 0;
-    }
-    if (tmpIsY) {
-      tmpEl.data('tY', tmpYAmt)
-    } else {
-      tmpYAmt = tmpEl.data('tY') || 0;
-    }
-
-    tmpElem.setAttribute("transform", "translate(" + tmpXAmt + "," + tmpYAmt + ")");
-  }
-  
-
   // --- Strings: leftright updown forwardback openclose
   ControlCode.pullString = function(theOptions) {
     var tmpOptions = theOptions || {};
@@ -343,6 +257,8 @@
       this.moveMouthAmt(tmpAmount, tmpString);
     } else if (tmpName == 'tail') {
       this.moveTailAmt(tmpAmount, tmpString);
+    } else if (tmpName == 'head') {
+      this.moveHeadAmt(tmpAmount, tmpString);
     } else if (tmpName == 'shell') {
       this.moveShellAmt(tmpAmount, tmpString);
     } else if (tmpName == 'body') {
@@ -364,6 +280,7 @@
 
   ControlCode.translateItem = translateItem;
   function translateItem(theItem, theXAmt, theYAmt) {
+    console.log('translateItem',theItem, theXAmt, theYAmt)
     var tmpEl = _charElems[theItem];
     var tmpElem = tmpEl.get(0);
     var tmpIsX = (theXAmt !== false);
@@ -380,6 +297,7 @@
       tmpXAmt = tmpEl.data('tX') || 0;
     }
     if (tmpIsY) {
+      console.log('set y ti')
       tmpEl.data('tY', tmpYAmt)
     } else {
       tmpYAmt = tmpEl.data('tY') || 0;
