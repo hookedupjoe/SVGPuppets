@@ -62,7 +62,8 @@ thisPageSpecs.required = {
         ThisPage.initOnFirstLoad().then(
             function () {
                 //~_onFirstLoad//~
-
+actions.startMusicResponse();
+actions.runReaction2();
 //~_onFirstLoad~//~
                 ThisPage._onActivate();
             }
@@ -90,11 +91,23 @@ actions.runTest = runTest;
     };
 
 
-actions.startDancing = function(){
-  this.parts.center.startDancing();
+actions.startMusicResponse = function(){
+  ThisPage.parts.center.startMusicResponse();
 }
-actions.stopDancing = function(){
-  this.parts.center.stopDancing();
+actions.stopMusicResponse = function(){
+  ThisPage.parts.center.stopMusicResponse();
+}
+
+actions.runReaction1 = function(){
+  ThisPage.parts.center.runReaction('reactionDance1');
+}
+
+actions.runReaction2 = function(){
+  ThisPage.parts.center.runReaction('reactionDance2');
+}
+
+actions.toggleMouth = function(){
+  ThisPage.parts.center.toggleMouth();
 }
 //~YourPageCode~//~
 

@@ -146,27 +146,99 @@
 
   }
 
+  ControlCode.reactionDance1 = function(){
+        this.pullString({name:'frontleft', amount:ThisApp.common.eqData.B2,  string: 'updown'});
+        this.pullString({name:'backleft', amount:ThisApp.common.eqData.B3,  string: 'updown'});
+        this.pullString({name:'backright', amount:ThisApp.common.eqData.B2,  string: 'updown'});
+        this.pullString({name:'frontright', amount:ThisApp.common.eqData.B3,  string: 'updown'});
+        this.pullString({name:'body', amount:ThisApp.common.eqData.B15,  string: 'updown'});
+        this.pullString({name:'shell', amount:ThisApp.common.eqData.B16,  string: 'updown'});
+        //this.pullString({name:'head', amount:ThisApp.common.eqData.kCycle,  string: 'updown'});
+
+        this.pullString({name:'eyebrowleft', amount:ThisApp.common.eqData.B28,  string: 'updown'});
+        this.pullString({name:'eyebrowright', amount:ThisApp.common.eqData.B29,  string: 'updown'});
+        //HappyTurtle.pullString({name:'pupils', amount:ThisApp.common.eqData.B30,  string: 'updown'});
+        //HappyTurtle.pullString({name:'pupils', amount:ThisApp.common.eqData.B30,  string: 'leftright'});
+        
+        if( this.moveMouth ){
+          this.reactionSpeak();
+        }
+
+  }
+  
+  ControlCode.reactionDance2 = function(){
+        this.pullString({name:'frontleft', amount:ThisApp.common.eqData.B11,  string: 'updown'});
+        this.pullString({name:'backleft', amount:ThisApp.common.eqData.B12,  string: 'updown'});
+        this.pullString({name:'backright', amount:ThisApp.common.eqData.B13,  string: 'updown'});
+        this.pullString({name:'frontright', amount:ThisApp.common.eqData.B14,  string: 'updown'});
+        this.pullString({name:'body', amount:ThisApp.common.eqData.B2,  string: 'updown'});
+        this.pullString({name:'shell', amount:ThisApp.common.eqData.B3,  string: 'updown', reverse: true});
+        //this.pullString({name:'shell', amount:ThisApp.common.eqData.kCycle,  string: 'updown'});
+
+        this.pullString({name:'eyebrowleft', amount:ThisApp.common.eqData.B28,  string: 'updown'});
+        this.pullString({name:'eyebrowright', amount:ThisApp.common.eqData.B29,  string: 'updown'});
+        //HappyTurtle.pullString({name:'pupils', amount:ThisApp.common.eqData.B30,  string: 'updown'});
+        //HappyTurtle.pullString({name:'pupils', amount:ThisApp.common.eqData.B30,  string: 'leftright'});
+        //this.reactionSpeak();
+        if( this.moveMouth ){
+          this.reactionSpeak();
+        }
+
+  }
+  
+  ControlCode.toggleMouth = function(){
+    this.moveMouth = !this.moveMouth;
+    
+  }
+  
+  
+  ControlCode.reactionSpeak = function(){
+           // var tmpVol = ThisApp.common.eqData.B15 || 0;
+    var tmpEQ = ThisApp.common.eqData;
+  
+    var tmpAmt = (tmpEQ.B13 + tmpEQ.B14 + tmpEQ.B15 + tmpEQ.B16 + tmpEQ.B17 + tmpEQ.B18 + tmpEQ.B19);
+    tmpAmt /= 7;
+    tmpAmt = this.mapNumber(tmpAmt, 0, 75, 40, 230);
+    
+    if( tmpAmt > 255 ){
+      tmpAmt = 255;
+    }
+    if( tmpAmt < 40 ){
+      tmpAmt = 40;
+    }
+    
+    this.pullString({name:'mouth', amount:tmpAmt,  string: 'openclose'});
+
+  }
+  
+
   var watchDog1 = 0;
-  ControlCode.startDancing = startDancing;
-  function startDancing(){
+  var ThisControl;
+  
+
+  var reactionFunction = false;
+  ControlCode.runReaction = function(theName) {
+    var tmpFunc = ThisControl[theName];
+    if( !(tmpFunc) ) return;
+    tmpFunc = tmpFunc.bind(this);
+    reactionFunction = tmpFunc;
+  }
+  
+  
+  // ControlCode.runReactionAction(theParams, theTarget) {
+  //           var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['href']);
+    
+  // }
+  
+  ControlCode.startMusicResponse = startMusicResponse;
+  function startMusicResponse(){
     // update the display based on data
     this.danceInterval = d3.interval(function () {
      
       try {
-       // var tmpVol = ThisApp.common.eqData.B15 || 0;
-        HappyTurtle.pullString({name:'frontleft', amount:ThisApp.common.eqData.B2,  string: 'updown'});
-        HappyTurtle.pullString({name:'backleft', amount:ThisApp.common.eqData.B3,  string: 'updown'});
-        HappyTurtle.pullString({name:'backright', amount:ThisApp.common.eqData.B4,  string: 'updown'});
-        HappyTurtle.pullString({name:'frontright', amount:ThisApp.common.eqData.B5,  string: 'updown'});
-        HappyTurtle.pullString({name:'body', amount:ThisApp.common.eqData.B28,  string: 'updown'});
-        HappyTurtle.pullString({name:'shell', amount:ThisApp.common.eqData.B29,  string: 'updown'});
-
-        HappyTurtle.pullString({name:'eyebrowleft', amount:ThisApp.common.eqData.B15,  string: 'openclose'});
-        HappyTurtle.pullString({name:'eyebrowright', amount:ThisApp.common.eqData.B15,  string: 'openclose'});
-        //HappyTurtle.pullString({name:'mouth', amount:ThisApp.common.eqData.B8,  string: 'openclose'});
-        HappyTurtle.pullString({name:'pupils', amount:ThisApp.common.eqData.B30,  string: 'updown'});
-        HappyTurtle.pullString({name:'pupils', amount:ThisApp.common.eqData.B30,  string: 'leftright'});
-        
+        if((reactionFunction)){
+          reactionFunction();
+        }
         
     } catch (ex) {
         //temp -> 
@@ -179,8 +251,8 @@
       5);
   }
   
-  ControlCode.stopDancing = stopDancing;
-  function stopDancing(){
+  ControlCode.stopMusicResponse = stopMusicResponse;
+  function stopMusicResponse(){
     if( !this.danceInterval ) return;
       
     this.danceInterval.stop();
@@ -321,7 +393,6 @@
 
   ControlCode.translateItem = translateItem;
   function translateItem(theItem, theXAmt, theYAmt) {
-    console.log('translateItem',theItem, theXAmt, theYAmt)
     var tmpEl = _charElems[theItem];
     var tmpElem = tmpEl.get(0);
     var tmpIsX = (theXAmt !== false);
@@ -329,7 +400,6 @@
     var tmpXAmt = tmpIsX ? theXAmt: 0;
     var tmpYAmt = tmpIsY ? theYAmt: 0;
     var tmpData = tmpEl.data() || {};
-    console.log('tmpElem data', tmpData);
 
     //--- Save element(s) data that is being set
     if (tmpIsX) {
@@ -338,7 +408,6 @@
       tmpXAmt = tmpEl.data('tX') || 0;
     }
     if (tmpIsY) {
-      console.log('set y ti')
       tmpEl.data('tY', tmpYAmt)
     } else {
       tmpYAmt = tmpEl.data('tY') || 0;
@@ -359,8 +428,11 @@
   function _onInit() {
     //-- For debugging only
     window.HappyTurtle = this;
-    this.showDebug = false;
 
+    this.showDebug = false;
+    ThisControl = this;
+
+    this.moveMouth = false
 
     this.loadSpot('body', {}, 'HappyTurtle');
     this.initElems();
