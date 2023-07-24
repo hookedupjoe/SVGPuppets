@@ -7,8 +7,8 @@
         templates: {
           map:
           {
-            "HappyTurtle": {
-              source: "__app", name: "HappyTurtle"
+            "EtchyHome": {
+              source: "__app", name: "EtchyHome"
             }
           }
         }
@@ -18,11 +18,6 @@
       ctl: "spot",
       name: "body",
       text: ""
-    }, {
-      ctl: "control",
-      controlname: "WinsockController",
-      name: "winsock",
-      source: "__app"
     }]
   }
 
@@ -61,31 +56,12 @@
   
   //=== ToDo: Refactor and change structure ..
   var _charDetails = {
-    tail: {
-      x: 83,
-      y: 270
-    },
-    frontleft: {
-      x: 483,
-      y: 217
-    },
-    backleft: {
-      x: 230,
-      y: 230
-    },
-    backright: {
-      x: 176,
-      y: 202
-    },
-    frontright: {
-      x: 420,
-      y: 176
+    
+    leftarm: {
+      x: 62,
+      y: 53
     },
     body: {
-      x: 0,
-      y: 0
-    },
-    shell: {
       x: 0,
       y: 0
     },
@@ -96,22 +72,6 @@
     eyeballs: {
       x: 0,
       y: 0
-    },
-    nose: {
-      x: 0,
-      y: 0
-    },
-    eyebrowleft: {
-      x: 0,
-      y: 0
-    },
-    eyebrowright: {
-      x: 0,
-      y: 0
-    },
-    mouth: {
-      x: 662,
-      y: 326
     },
     head: {
       x: 553,
@@ -417,24 +377,28 @@
   }
 
   ControlCode.rotateItem = rotateItem;
-  function rotateItem(theItem, thePerc) {
+  function rotateItem(theItem, thePerc, theOptX, theOptY) {
     var tmpSpecs = _charDetails[theItem];
     var tmpElem = _charElems[theItem].get(0);
-    tmpElem.setAttribute("transform", "rotate(" + thePerc + "," + tmpSpecs.x + "," + tmpSpecs.y + ")");
+    if( theOptX && theOptY){
+      tmpElem.setAttribute("transform", "rotate(" + thePerc + "," + theOptX + ',' + theOptY + ")");
+    } else {
+      tmpElem.setAttribute("transform", "rotate(" + thePerc + "," + tmpSpecs.x + "," + tmpSpecs.y + ")");
+    }
   }
 
 
   ControlCode._onInit = _onInit;
   function _onInit() {
     //-- For debugging only
-    window.HappyTurtle = this;
+    window.Etchy = this;
 
     this.showDebug = false;
     ThisControl = this;
 
     this.moveMouth = false
 
-    this.loadSpot('body', {}, 'HappyTurtle');
+    this.loadSpot('body', {}, 'EtchyHome');
     this.initElems();
     this.getSpot('body').css('background-color', 'green');
 
